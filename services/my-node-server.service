@@ -1,0 +1,8 @@
+[Unit]
+Description=A replacement for Nginx that uses Node.js to host the web server
+
+[Service]
+WorkingDirectory=/home/humungous/express-app
+ExecStart=/usr/bin/my-node-server.sh
+User=humungous
+Group=humungous

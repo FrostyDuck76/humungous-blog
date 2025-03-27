@@ -1,0 +1,5 @@
+[Unit]
+Description=A special restart script that must be triggered manually
+
+[Service]
+ExecStart=/usr/bin/my-restart-script.sh
