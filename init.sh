@@ -143,6 +143,10 @@ chown humungous:humungous --recursive "/var/www/html/"
 ln -s "/var/www/html" "/home/humungous/html"
 chown --no-dereference humungous:humungous "/home/humungous/html"
 
+# Set a password for the new user from a file
+echo "humungous:$(cat /password.txt)" | sudo chpasswd
+rm "/password.txt"
+
 # Apply configurations to existing services
 if [ -f "/etc/vsftpd/vsftpd.conf" ]; then
     mv "/etc/vsftpd/vsftpd.conf" "/root/configs_old/"
