@@ -1,0 +1,9 @@
+[Unit]
+Description=Custom startup script that starts on boot to load necessary servers slowly
+After=my-tcpdumpd.service
+
+[Service]
+ExecStart=/usr/bin/my-startup-script.sh
+
+[Install]
+WantedBy=multi-user.target

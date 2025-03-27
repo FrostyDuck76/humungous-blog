@@ -1,0 +1,12 @@
+[Unit]
+Description=Starts capturing packets using tcpdump at boot
+Wants=network.target
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/my-tcpdumpd.sh
+ExecStop=/usr/bin/my-tcpdumpd-killscript.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
