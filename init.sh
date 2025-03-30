@@ -140,8 +140,9 @@ useradd humungous
 usermod humungous -aG 'wheel'
 mkdir -p "/var/www/html/"
 chown humungous:humungous --recursive "/var/www/html/"
-ln -s "/var/www/html" "/home/humungous/html"
-chown --no-dereference humungous:humungous "/home/humungous/html"
+mkdir "/home/humungous/html/"
+chown humungous:humungous "/home/humungous/html/"
+echo "/var/www/html    /home/humungous/html    none    bind    0    0" >> "/etc/fstab"
 
 # Set a password for the new user from a file
 echo "humungous:$(cat /password.txt)" | sudo chpasswd
@@ -161,6 +162,9 @@ mv "/root/configs/vsftpd.conf" "/etc/vsftpd/"
 mv "/root/configs/nginx.conf" "/etc/nginx/"
 mv "/root/configs/stunnel.conf" "/etc/stunnel/"
 
+# Enable SELinux boolean to allow FTP full access
+setsebool -P ftpd_full_access on
+
 # Set up the express app to host a web server using Node.js
 mkdir "/home/humungous/express-app/"
 mkdir "/home/humungous/express-app/tls-keylogs/"
@@ -168,7 +172,7 @@ chown humungous:humungous --recursive "/home/humungous/express-app/"
 chmod --recursive 700 "/home/humungous/express-app/tls-keylogs/"
 su - -c "cd /home/humungous/express-app/ && npm init -y" humungous
 su - -c "cd /home/humungous/express-app/ && npm install express" humungous
-setcap 'cap_net_bind_service=+ep' /usr/bin/node
+setcap 'cap_net_bind_service=+ep' $(readlink -f /usr/bin/node)
 mv "/root/configs/server.js" "/home/humungous/express-app/"
 chown humungous:humungous "/home/humungous/express-app/server.js"
 
