@@ -4,19 +4,26 @@ if [ "$(hostname)" == "first-stage-droplet" ]; then
     # Download debugging scripts and services from the GitHub repo
     curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/debug/droplet-1/my-debug-script.sh -o "/root/scripts/my-debug-script.sh"
     curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/debug/droplet-1/my-debug-script.service -o "/root/services/my-debug-script.service"
+    curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/debug/clean-up.sh -o "/root/scripts/clean-up.sh"
 
     # Convert line-encodings from CRLF to LF
     dos2unix "/root/scripts/my-debug-script.sh"
     dos2unix "/root/services/my-debug-script.service"
+    dos2unix "/root/scripts/clean-up.sh"
 
-    # Move the downloaded script to /usr/bin
+    # Move the downloaded debugging script to /usr/bin
     mv "/root/scripts/my-debug-script.sh" "/usr/bin/"
 
-    # Restore security context of the script
-    restorecon "/usr/bin/my-debug-script.sh"
+    # Move the cleanup script to /usr/sbin
+    mv "/root/scripts/clean-up.sh" "/usr/sbin/"
 
-    # Make the downloaded script executable
+    # Restore security context of scripts
+    restorecon "/usr/bin/my-debug-script.sh"
+    restorecon "/usr/sbin/clean-up.sh"
+
+    # Make downloaded scripts executable
     chmod +x "/usr/bin/my-debug-script.sh"
+    chmod 755 "/usr/sbin/clean-up.sh"
 
     # Move the downloaded service to /etc/systemd/system
     mv "/root/services/my-debug-script.service" "/etc/systemd/system/"
@@ -30,19 +37,26 @@ elif [ "$(hostname)" == "humungous-blog" ]; then
     # Download debugging scripts and services from the GitHub repo
     curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/debug/droplet-2/my-debug-script.sh -o "/root/scripts/my-debug-script.sh"
     curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/debug/droplet-2/my-debug-script.service -o "/root/services/my-debug-script.service"
+    curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/debug/clean-up.sh -o "/root/scripts/clean-up.sh"
 
     # Convert line-encodings from CRLF to LF
     dos2unix "/root/scripts/my-debug-script.sh"
     dos2unix "/root/services/my-debug-script.service"
+    dos2unix "/root/scripts/clean-up.sh"
 
-    # Move the downloaded script to /usr/bin
+    # Move the downloaded debugging script to /usr/bin
     mv "/root/scripts/my-debug-script.sh" "/usr/bin/"
 
-    # Restore security context of the script
-    restorecon "/usr/bin/my-debug-script.sh"
+    # Move the cleanup script to /usr/sbin
+    mv "/root/scripts/clean-up.sh" "/usr/sbin/"
 
-    # Make the downloaded script executable
+    # Restore security context of scripts
+    restorecon "/usr/bin/my-debug-script.sh"
+    restorecon "/usr/sbin/clean-up.sh"
+
+    # Make downloaded scripts executable
     chmod +x "/usr/bin/my-debug-script.sh"
+    chmod 755 "/usr/sbin/clean-up.sh"
 
     # Move the downloaded service to /etc/systemd/system
     mv "/root/services/my-debug-script.service" "/etc/systemd/system/"
