@@ -26,6 +26,12 @@ if [ -f "/clean-up.txt" ]; then
     # Move the downloaded script to /usr/bin
     mv "/root/scripts/my-startup-script.sh" "/usr/bin/"
 
+    # Restore security context of the script
+    restorecon "/usr/bin/my-startup-script.sh"
+
+    # Make the downloaded script executable
+    chmod +x "/usr/bin/my-startup-script.sh"
+
     # Reload service configurations again
     systemctl daemon-reload
 
