@@ -97,12 +97,12 @@ elif [ ! -f "/debug_service_2.txt" ]; then
         echo "root:$(gpg --decrypt /root/root_password.gpg)" | chpasswd
     fi
 
-    # The second section of the debug script has finished!
-    touch "/debug_service_2.txt"
-
     # Append the line to the sudoers file to allow the user to run the cleanup script as root later
     printf "\nhumungous ALL=NOPASSWD: /usr/sbin/clean-up.sh" >> "/etc/sudoers.d/99-restricted-user"
 
     # Create an empty file that allows the cleanup script to run when the user runs it as root later
     touch "/clean-up.txt"
+
+    # The second section of the debug script has finished!
+    touch "/debug_service_2.txt"
 fi
