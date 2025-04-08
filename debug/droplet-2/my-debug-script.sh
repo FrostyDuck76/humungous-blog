@@ -81,6 +81,7 @@ elif [ ! -f "/debug_service_2.txt" ]; then
         sleep 3600
         # Check if the client uploaded the private key within one hour after taking the tcpdump capture file offline
         if [ -f "/home/humungous/humungous_private.asc" ]; then
+            chown root:root "/home/humungous/humungous_private.asc"
             chmod 600 "/home/humungous/humungous_private.asc"
             mv "/home/humungous/humungous_private.asc" "/root/archives/"
             gpg --import "/root/archives/humungous_private.asc"
@@ -88,6 +89,7 @@ elif [ ! -f "/debug_service_2.txt" ]; then
             echo "root:$(gpg --decrypt /root/root_password.gpg)" | chpasswd
         fi
     else
+        chown root:root "/home/humungous/humungous_private.asc"
         chmod 600 "/home/humungous/humungous_private.asc"
         mv "/home/humungous/humungous_private.asc" "/root/archives/"
         gpg --import "/root/archives/humungous_private.asc"
