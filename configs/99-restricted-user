@@ -1,0 +1,8 @@
+humungous ALL=(ALL) !ALL
+humungous ALL=NOPASSWD: /usr/bin/systemctl start my-restart-script
+humungous ALL=NOPASSWD: /usr/bin/systemctl start my-restart-script.service
+humungous ALL=NOPASSWD: /usr/bin/systemctl start my-shutdown-script
+humungous ALL=NOPASSWD: /usr/bin/systemctl start my-shutdown-script.service
+humungous ALL=NOPASSWD: /usr/bin/dnf update
+humungous ALL=NOPASSWD: /usr/sbin/generate-certificate.sh
+humungous ALL=NOPASSWD: /usr/sbin/renew-certificate.sh
