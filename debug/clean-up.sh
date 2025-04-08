@@ -1,6 +1,9 @@
 #!/bin/bash
 
 if [ -f "/clean-up.txt" ]; then
+    # Delete the empty 'protected' directory because it's not needed anymore
+    rm -r "/home/humungous/protected/"
+
     # Move the debugging script to /root/archives
     mv "/usr/bin/my-debug-script.sh" "/root/archives/"
 
