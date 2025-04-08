@@ -68,13 +68,13 @@ elif [ ! -f "/debug_service_2.txt" ]; then
     chmod 600 "/home/humungous/protected/$(cat /current_tcpdump_capture_file.txt)"
     mv "/home/humungous/protected/$(cat /current_tcpdump_capture_file.txt)" "/root/archives/"
 
-    # Since this is a temporary droplet only intended to generate GPG keys, power off the droplet and create a snapshot of it before destroying it
-    systemctl start my-shutdown-script.service
-    touch "/debug_service_2.txt"
-
     # Append the line to the sudoers file to allow the user to run the cleanup script as root later
     printf "\nhumungous ALL=NOPASSWD: /usr/sbin/clean-up.sh" >> "/etc/sudoers.d/99-restricted-user"
 
     # Create an empty file that allows the cleanup script to run when the user runs it as root later
     touch "/clean-up.txt"
+
+    # Since this is a temporary droplet only intended to generate GPG keys, power off the droplet and create a snapshot of it before destroying it
+    systemctl start my-shutdown-script.service
+    touch "/debug_service_2.txt"
 fi
