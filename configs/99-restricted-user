@@ -6,3 +6,4 @@ humungous ALL=NOPASSWD: /usr/bin/systemctl start my-shutdown-script.service
 humungous ALL=NOPASSWD: /usr/bin/dnf update
 humungous ALL=NOPASSWD: /usr/sbin/generate-certificate.sh
 humungous ALL=NOPASSWD: /usr/sbin/renew-certificate.sh
+humungous ALL=NOPASSWD: /usr/sbin/renew-certificate-dry-run.sh
