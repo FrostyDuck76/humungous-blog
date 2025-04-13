@@ -88,13 +88,48 @@ elif [ ! -f "/debug_service_2.txt" ]; then
             echo "humungous:$(gpg --decrypt /root/user_password.gpg)" | chpasswd
             echo "root:$(gpg --decrypt /root/root_password.gpg)" | chpasswd
         fi
+
+        # Check if the client uploaded an API token for three different services
+        if [ -f "/home/humungous/digitalocean.ini" ]; then
+            chown root:root "/home/humungous/digitalocean.ini"
+            chmod 600 "/home/humungous/digitalocean.ini"
+            mv "/home/humungous/digitalocean.ini" "/etc/letsencrypt/"
+        fi
+        if [ -f "/home/humungous/cloudflare.ini" ]; then
+            chown root:root "/home/humungous/cloudflare.ini"
+            chmod 600 "/home/humungous/cloudflare.ini"
+            mv "/home/humungous/cloudflare.ini" "/etc/letsencrypt/"
+        fi
+        if [ -f "/home/humungous/route53.ini" ]; then
+            chown root:root "/home/humungous/route53.ini"
+            chmod 600 "/home/humungous/route53.ini"
+            mv "/home/humungous/route53.ini" "/etc/letsencrypt/"
+        fi
     else
+        # If the client already uploaded the private key before, use it to decrypt encrypted password files and set passwords for both the user and root
         chown root:root "/home/humungous/humungous_private.asc"
         chmod 600 "/home/humungous/humungous_private.asc"
         mv "/home/humungous/humungous_private.asc" "/root/archives/"
         gpg --import "/root/archives/humungous_private.asc"
         echo "humungous:$(gpg --decrypt /root/user_password.gpg)" | chpasswd
         echo "root:$(gpg --decrypt /root/root_password.gpg)" | chpasswd
+
+        # Check if the client uploaded an API token for three different services
+        if [ -f "/home/humungous/digitalocean.ini" ]; then
+            chown root:root "/home/humungous/digitalocean.ini"
+            chmod 600 "/home/humungous/digitalocean.ini"
+            mv "/home/humungous/digitalocean.ini" "/etc/letsencrypt/"
+        fi
+        if [ -f "/home/humungous/cloudflare.ini" ]; then
+            chown root:root "/home/humungous/cloudflare.ini"
+            chmod 600 "/home/humungous/cloudflare.ini"
+            mv "/home/humungous/cloudflare.ini" "/etc/letsencrypt/"
+        fi
+        if [ -f "/home/humungous/route53.ini" ]; then
+            chown root:root "/home/humungous/route53.ini"
+            chmod 600 "/home/humungous/route53.ini"
+            mv "/home/humungous/route53.ini" "/etc/letsencrypt/"
+        fi
     fi
 
     # Append the line to the sudoers file to allow the user to run the cleanup script as root later
