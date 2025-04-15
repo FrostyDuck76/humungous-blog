@@ -19,6 +19,7 @@ else
     certbot certonly --manual --preferred-challenges dns -d humungous.blog -d www.humungous.blog
 fi
 
+# Allow the group read-only access to Let's Encrypt certificates stored in /etc/letsencrypt/live
 if [ -d "/etc/letsencrypt/live/" ]; then
     chgrp 'ssl-cert' --recursive "/etc/letsencrypt/live/"
     chmod 750 "/etc/letsencrypt/live/"
@@ -34,6 +35,7 @@ if [ -d "/etc/letsencrypt/live/" ]; then
     chmod 640 "/etc/letsencrypt/live/www.humungous.blog/privkey.pem"
 fi
 
+# Allow the group read-only access to Let's Encrypt certificates stored in /etc/letsencrypt/archive
 if [ -d "/etc/letsencrypt/archive/" ]; then
     chgrp 'ssl-cert' --recursive "/etc/letsencrypt/archive/"
     chmod 750 "/etc/letsencrypt/archive/"
