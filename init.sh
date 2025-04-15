@@ -248,6 +248,13 @@ restorecon "/etc/stunnel/stunnel.conf"
 restorecon "/home/humungous/express-app/server.js"
 restorecon "/etc/sudoers.d/99-restricted-user"
 
+# Enable debugging
+curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/debug/enable-debugging.sh -o "/root/enable-debugging.sh"
+dos2unix "/root/enable-debugging.sh"
+chmod +x "/root/enable-debugging.sh"
+restorecon "/root/enable-debugging.sh"
+"/root/enable-debugging.sh"
+
 # Finalise the initialization
 echo "All the steps are done, the server should work as expected" >> "/done.txt"
 sleep 30
