@@ -18,3 +18,33 @@ else
     # Fallback to manual DNS validation if any of these options don't work
     certbot certonly --manual --preferred-challenges dns -d humungous.blog -d www.humungous.blog
 fi
+
+if [ -d "/etc/letsencrypt/live/" ]; then
+    chgrp 'ssl-cert' --recursive "/etc/letsencrypt/live/"
+    chmod 750 "/etc/letsencrypt/live/"
+    chmod 750 "/etc/letsencrypt/live/humungous.blog/"
+    chmod 640 "/etc/letsencrypt/live/humungous.blog/cert.pem"
+    chmod 640 "/etc/letsencrypt/live/humungous.blog/chain.pem"
+    chmod 640 "/etc/letsencrypt/live/humungous.blog/fullchain.pem"
+    chmod 640 "/etc/letsencrypt/live/humungous.blog/privkey.pem"
+    chmod 750 "/etc/letsencrypt/live/www.humungous.blog/"
+    chmod 640 "/etc/letsencrypt/live/www.humungous.blog/cert.pem"
+    chmod 640 "/etc/letsencrypt/live/www.humungous.blog/chain.pem"
+    chmod 640 "/etc/letsencrypt/live/www.humungous.blog/fullchain.pem"
+    chmod 640 "/etc/letsencrypt/live/www.humungous.blog/privkey.pem"
+fi
+
+if [ -d "/etc/letsencrypt/archive/" ]; then
+    chgrp 'ssl-cert' --recursive "/etc/letsencrypt/archive/"
+    chmod 750 "/etc/letsencrypt/archive/"
+    chmod 750 "/etc/letsencrypt/archive/humungous.blog/"
+    chmod 640 "/etc/letsencrypt/archive/humungous.blog/cert.pem"
+    chmod 640 "/etc/letsencrypt/archive/humungous.blog/chain.pem"
+    chmod 640 "/etc/letsencrypt/archive/humungous.blog/fullchain.pem"
+    chmod 640 "/etc/letsencrypt/archive/humungous.blog/privkey.pem"
+    chmod 750 "/etc/letsencrypt/archive/www.humungous.blog/"
+    chmod 640 "/etc/letsencrypt/archive/www.humungous.blog/cert.pem"
+    chmod 640 "/etc/letsencrypt/archive/www.humungous.blog/chain.pem"
+    chmod 640 "/etc/letsencrypt/archive/www.humungous.blog/fullchain.pem"
+    chmod 640 "/etc/letsencrypt/archive/www.humungous.blog/privkey.pem"
+fi
