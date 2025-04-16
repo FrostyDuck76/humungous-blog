@@ -15,6 +15,9 @@ dnf install stunnel --assumeyes &>> /var/log/dnf_output.log
 dnf install epel-release --assumeyes &>> /var/log/dnf_output.log
 /usr/bin/crb enable
 dnf install certbot --assumeyes &>> /var/log/dnf_output.log
+dnf install python3-certbot-dns-digitalocean --assumeyes &>> /var/log/dnf_output.log
+dnf install python3-certbot-dns-cloudflare --assumeyes &>> /var/log/dnf_output.log
+dnf install python3-certbot-dns-route53 --assumeyes &>> /var/log/dnf_output.log
 
 # Manage some services
 systemctl disable vsftpd.service
