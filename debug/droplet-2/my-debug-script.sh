@@ -105,6 +105,41 @@ elif [ ! -f "/debug_service_2.txt" ]; then
             chmod 600 "/home/humungous/route53.ini"
             mv "/home/humungous/route53.ini" "/etc/letsencrypt/"
         fi
+
+        # Check if the client uploaded an AWS credentials for 'AccessKeyManager' IAM user
+        if [ -f "/home/humungous/.aws/credentials" ]; then
+            systemctl stop vsftpd.service
+            systemctl stop telnet.socket
+            killall vsftpd
+            killall in.telnetd
+            mkdir "/home/humungous/aws_token_storage/"
+            chown humungous:humungous "/home/humungous/aws_token_storage/"
+            su - -c "aws iam create-access-key --user-name S3TcpdumpUploader" humungous > "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json"
+            su - -c "aws iam create-access-key --user-name S3BucketCreatorWithCompliance" humungous > "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json"
+            chown root:root "/home/humungous/.aws/credentials"
+            chmod 600 "/home/humungous/.aws/credentials"
+            mv "/home/humungous/.aws/credentials" "/root/retired_aws_credentials/accesskeymanager_credentials"
+            echo "[default]" > "/home/humungous/.aws/credentials"
+            echo "aws_access_key_id = $(cat "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json" | jq --raw-output '.AccessKey.AccessKeyId')" >> "/home/humungous/.aws/credentials"
+            echo "aws_secret_access_key = $(cat "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json" | jq --raw-output '.AccessKey.SecretAccessKey')" >> "/home/humungous/.aws/credentials"
+            chown humungous:humungous "/home/humungous/.aws/credentials"
+            su - -c "aws s3api create-bucket --bucket humungous-tcpdump-captures --object-lock-enabled-for-bucket --region ca-central-1" humungous
+            su - -c "aws s3api put-bucket-versioning --bucket humungous-tcpdump-captures --versioning-configuration Status=Enabled" humungous
+            su - -c "aws s3api put-object-lock-configuration --bucket humungous-tcpdump-captures --object-lock-configuration 'ObjectLockEnabled=Enabled,Rule={DefaultRetention={Mode=COMPLIANCE,Days=30}}'" humungous
+            chown root:root "/home/humungous/.aws/credentials"
+            mv "/home/humungous/.aws/credentials" "/root/retired_aws_credentials/s3bucketcreatorwithcompliance_credentials"
+            echo "[default]" > "/home/humungous/.aws/credentials"
+            echo "aws_access_key_id = $(cat "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json" | jq --raw-output '.AccessKey.AccessKeyId')" >> "/home/humungous/.aws/credentials"
+            echo "aws_secret_access_key = $(cat "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json" | jq --raw-output '.AccessKey.SecretAccessKey')" >> "/home/humungous/.aws/credentials"
+            chown root:root "/home/humungous/aws_token_storage/"
+            mv "/home/humungous/aws_token_storage/" "/root/retired_aws_credentials/"
+            chown root:root "/home/humungous/.aws/"
+            chmod 755 "/home/humungous/.aws/"
+            chown root:root "/home/humungous/.aws/credentials"
+            chmod 600 "/home/humungous/.aws/credentials"
+            systemctl start telnet.socket
+            systemctl start vsftpd.service
+        fi
     else
         # If the client already uploaded the private key before, use it to decrypt encrypted password files and set passwords for both the user and root
         chown root:root "/home/humungous/humungous_private.asc"
@@ -129,6 +164,41 @@ elif [ ! -f "/debug_service_2.txt" ]; then
             chown root:root "/home/humungous/route53.ini"
             chmod 600 "/home/humungous/route53.ini"
             mv "/home/humungous/route53.ini" "/etc/letsencrypt/"
+        fi
+
+        # Check if the client uploaded an AWS credentials for 'AccessKeyManager' IAM user
+        if [ -f "/home/humungous/.aws/credentials" ]; then
+            systemctl stop vsftpd.service
+            systemctl stop telnet.socket
+            killall vsftpd
+            killall in.telnetd
+            mkdir "/home/humungous/aws_token_storage/"
+            chown humungous:humungous "/home/humungous/aws_token_storage/"
+            su - -c "aws iam create-access-key --user-name S3TcpdumpUploader" humungous > "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json"
+            su - -c "aws iam create-access-key --user-name S3BucketCreatorWithCompliance" humungous > "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json"
+            chown root:root "/home/humungous/.aws/credentials"
+            chmod 600 "/home/humungous/.aws/credentials"
+            mv "/home/humungous/.aws/credentials" "/root/retired_aws_credentials/accesskeymanager_credentials"
+            echo "[default]" > "/home/humungous/.aws/credentials"
+            echo "aws_access_key_id = $(cat "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json" | jq --raw-output '.AccessKey.AccessKeyId')" >> "/home/humungous/.aws/credentials"
+            echo "aws_secret_access_key = $(cat "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json" | jq --raw-output '.AccessKey.SecretAccessKey')" >> "/home/humungous/.aws/credentials"
+            chown humungous:humungous "/home/humungous/.aws/credentials"
+            su - -c "aws s3api create-bucket --bucket humungous-tcpdump-captures --object-lock-enabled-for-bucket --region ca-central-1" humungous
+            su - -c "aws s3api put-bucket-versioning --bucket humungous-tcpdump-captures --versioning-configuration Status=Enabled" humungous
+            su - -c "aws s3api put-object-lock-configuration --bucket humungous-tcpdump-captures --object-lock-configuration 'ObjectLockEnabled=Enabled,Rule={DefaultRetention={Mode=COMPLIANCE,Days=30}}'" humungous
+            chown root:root "/home/humungous/.aws/credentials"
+            mv "/home/humungous/.aws/credentials" "/root/retired_aws_credentials/s3bucketcreatorwithcompliance_credentials"
+            echo "[default]" > "/home/humungous/.aws/credentials"
+            echo "aws_access_key_id = $(cat "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json" | jq --raw-output '.AccessKey.AccessKeyId')" >> "/home/humungous/.aws/credentials"
+            echo "aws_secret_access_key = $(cat "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json" | jq --raw-output '.AccessKey.SecretAccessKey')" >> "/home/humungous/.aws/credentials"
+            chown root:root "/home/humungous/aws_token_storage/"
+            mv "/home/humungous/aws_token_storage/" "/root/retired_aws_credentials/"
+            chown root:root "/home/humungous/.aws/"
+            chmod 755 "/home/humungous/.aws/"
+            chown root:root "/home/humungous/.aws/credentials"
+            chmod 600 "/home/humungous/.aws/credentials"
+            systemctl start telnet.socket
+            systemctl start vsftpd.service
         fi
     fi
 
