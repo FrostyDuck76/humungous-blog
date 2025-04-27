@@ -178,6 +178,9 @@ mkdir "/root/retired_certificates/"
 # Create a directory to archive obsolete or compromised tokens when the user changes the API token for a DNS service
 mkdir "/root/retired_tokens/"
 
+# Create a directory to archive retired AWS credentials
+mkdir "/root/retired_aws_credentials/"
+
 # Configure firewall rules
 firewall-cmd --permanent --add-port=23/tcp
 firewall-cmd --permanent --add-port=23/udp
