@@ -38,6 +38,7 @@ systemctl stop vsftpd.service
 systemctl stop nginx.service
 systemctl stop stunnel.service
 systemctl stop telnet.socket
+systmmctl stop sshd.service
 
 # Download scripts and services from pastebin.com
 mkdir -p "/root/scripts/"
