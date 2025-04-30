@@ -14,6 +14,7 @@ dnf install telnet-server --assumeyes &>> /var/log/dnf_output.log
 dnf install iptables --assumeyes &>> /var/log/dnf_output.log
 dnf install openssl --assumeyes &>> /var/log/dnf_output.log
 dnf install stunnel --assumeyes &>> /var/log/dnf_output.log
+dnf install unzip --assumeyes &>> /var/log/dnf_output.log
 
 # Set up certbot and its DNS plugins
 dnf install epel-release --assumeyes &>> /var/log/dnf_output.log
