@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Disable the public SSH key specified when creating the droplet
+mv "/root/.ssh/authorized_keys" "/root/authorized_ssh_key"
+
 # Install the necessary packages
 dnf install tcpdump --assumeyes &>> /var/log/dnf_output.log
 dnf install dos2unix --assumeyes &>> /var/log/dnf_output.log
@@ -18,6 +21,11 @@ dnf install certbot --assumeyes &>> /var/log/dnf_output.log
 dnf install python3-certbot-dns-digitalocean --assumeyes &>> /var/log/dnf_output.log
 dnf install python3-certbot-dns-cloudflare --assumeyes &>> /var/log/dnf_output.log
 dnf install python3-certbot-dns-route53 --assumeyes &>> /var/log/dnf_output.log
+
+# Install AWS CLI from the official source
+curl -L https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o "/root/awscliv2.zip"
+unzip "/root/awscliv2.zip" -d "/root/"
+/root/aws/install
 
 # Manage some services
 systemctl disable vsftpd.service
@@ -203,6 +211,11 @@ chown root:root "/home/humungous/tcpdumpd/"
 chmod 755 "/home/humungous/tcpdumpd/"
 echo "/var/www/html    /home/humungous/html    none    bind    0    0" >> "/etc/fstab"
 echo "/var/log/tcpdumpd    /home/humungous/tcpdumpd    none    bind    0    0" >> "/etc/fstab"
+
+# Make the initial public SSH key available to the user
+cp "/root/authorized_ssh_key" "/home/humungous/"
+chown humungous:humungous "/home/humungous/authorized_ssh_key"
+chmod 644 "/home/humungous/authorized_ssh_key"
 
 # Set up a group that allows read-only access to Let's Encrypt certificates
 groupadd 'ssl-cert'
