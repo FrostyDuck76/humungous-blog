@@ -70,6 +70,7 @@ curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/stunnel.conf -o "/root/configs/stunnel.conf"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/server.js -o "/root/configs/server.js"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/99-restricted-user -o "/root/configs/99-restricted-user"
+curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/aws-config -o "/root/configs/aws-config"
 
 # Convert line-encodings from CRLF to LF
 dos2unix "/root/scripts/my-restart-script.sh"
@@ -94,6 +95,7 @@ dos2unix "/root/configs/nginx.conf"
 dos2unix "/root/configs/stunnel.conf"
 dos2unix "/root/configs/server.js"
 dos2unix "/root/configs/99-restricted-user"
+dos2unix "/root/configs/aws-config"
 
 # Move downloaded scripts to /usr/bin
 mv "/root/scripts/my-restart-script.sh" "/usr/bin/"
@@ -238,6 +240,13 @@ fi
 mv "/root/configs/vsftpd.conf" "/etc/vsftpd/"
 mv "/root/configs/nginx.conf" "/etc/nginx/"
 mv "/root/configs/stunnel.conf" "/etc/stunnel/"
+
+# Apply configurations to AWS CLI
+mkdir "/home/humungous/.aws/"
+chown humungous:humungous "/home/humungous/.aws/"
+mv "/root/configs/aws-config" "/home/humungous/.aws/config"
+chown root:root "/home/humungous/.aws/config"
+chmod 644 "/home/humungous/.aws/config"
 
 # Apply pre-configured sudoers file that allows the user to run some commands as root
 mv "/root/configs/99-restricted-user" "/etc/sudoers.d/"
