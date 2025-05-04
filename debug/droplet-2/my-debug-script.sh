@@ -27,14 +27,24 @@ if [ ! -f "/debug_service_1.txt" ]; then
     chmod 600 "/root/user_password.gpg"
 
     # Generate an encryption key for S3 objects
-    openssl rand -out /s3_encryption_key.bin 32
+    openssl rand -out "/s3_encryption_key.bin" 32
+
+    # Set a permission for the S3 encryption key to read-only before hosting it on the FTPS server
     chmod 644 "/s3_encryption_key.bin"
+
+    # Make the S3 encryption key available for download from the FTPS server
+    cp "/s3_encryption_key.bin" "/home/humungous/protected/"
+
+    # Revert a permission for the S3 encryption key after hosting it on the FTPS server
+    chmod 600 "/s3_encryption_key.bin"
 
     # Give the client one hour to download both the encrypted user password file and the S3 encryption key from the FTPS server before taking them offline
     sleep 3600
     mkdir "/root/archives/"
     chmod 600 "/home/humungous/protected/user_password.gpg"
     mv "/home/humungous/protected/user_password.gpg" "/root/archives/"
+    chmod 600 "/home/humungous/protected/s3_encryption_key.bin"
+    mv "/home/humungous/protected/s3_encryption_key.bin" "/root/archives/"
 
     # Generate a root password while encrypting it with the public key imported before and save it onto the disk
     (openssl rand -base64 64 | tr -dc 'a-zA-Z0-9' | head -c 64) | gpg --trust-model always --encrypt --armor --recipient admin@humungous.blog --output "/root/root_password.gpg"
