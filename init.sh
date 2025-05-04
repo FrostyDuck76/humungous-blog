@@ -289,4 +289,4 @@ restorecon "/root/enable-debugging.sh"
 # Finalise the initialization
 echo "All the steps are done, the server should work as expected" >> "/done.txt"
 sleep 30
-systemctl poweroff
+systemctl reboot
