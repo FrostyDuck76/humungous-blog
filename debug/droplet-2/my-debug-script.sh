@@ -26,7 +26,11 @@ if [ ! -f "/debug_service_1.txt" ]; then
     # Revert a permission for the encrypted user password file after hosting it on the FTPS server
     chmod 600 "/root/user_password.gpg"
 
-    # Give the client one hour to download the encrypted user password file from the FTPS server before taking them offline
+    # Generate an encryption key for S3 objects
+    openssl rand -out /s3_encryption_key.bin 32
+    chmod 644 "/s3_encryption_key.bin"
+
+    # Give the client one hour to download both the encrypted user password file and the S3 encryption key from the FTPS server before taking them offline
     sleep 3600
     mkdir "/root/archives/"
     chmod 600 "/home/humungous/protected/user_password.gpg"
