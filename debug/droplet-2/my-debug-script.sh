@@ -115,19 +115,9 @@ elif [ ! -f "/debug_service_2.txt" ]; then
             mkdir "/home/humungous/aws_token_storage/"
             chown humungous:humungous "/home/humungous/aws_token_storage/"
             su - -c "/usr/local/bin/aws iam create-access-key --user-name S3TcpdumpUploader" humungous > "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json"
-            su - -c "/usr/local/bin/aws iam create-access-key --user-name S3BucketCreatorWithCompliance" humungous > "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json"
             chown root:root "/home/humungous/.aws/credentials"
             chmod 600 "/home/humungous/.aws/credentials"
             mv "/home/humungous/.aws/credentials" "/root/retired_aws_credentials/accesskeymanager_credentials"
-            echo "[default]" > "/home/humungous/.aws/credentials"
-            echo "aws_access_key_id = $(cat "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json" | jq --raw-output '.AccessKey.AccessKeyId')" >> "/home/humungous/.aws/credentials"
-            echo "aws_secret_access_key = $(cat "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json" | jq --raw-output '.AccessKey.SecretAccessKey')" >> "/home/humungous/.aws/credentials"
-            chown humungous:humungous "/home/humungous/.aws/credentials"
-            su - -c "/usr/local/bin/aws s3api create-bucket --bucket humungous-tcpdump-captures --object-lock-enabled-for-bucket --region ca-central-1" humungous
-            su - -c "/usr/local/bin/aws s3api put-bucket-versioning --bucket humungous-tcpdump-captures --versioning-configuration Status=Enabled" humungous
-            su - -c "/usr/local/bin/aws s3api put-object-lock-configuration --bucket humungous-tcpdump-captures --object-lock-configuration 'ObjectLockEnabled=Enabled,Rule={DefaultRetention={Mode=COMPLIANCE,Days=30}}'" humungous
-            chown root:root "/home/humungous/.aws/credentials"
-            mv "/home/humungous/.aws/credentials" "/root/retired_aws_credentials/s3bucketcreatorwithcompliance_credentials"
             echo "[default]" > "/home/humungous/.aws/credentials"
             echo "aws_access_key_id = $(cat "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json" | jq --raw-output '.AccessKey.AccessKeyId')" >> "/home/humungous/.aws/credentials"
             echo "aws_secret_access_key = $(cat "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json" | jq --raw-output '.AccessKey.SecretAccessKey')" >> "/home/humungous/.aws/credentials"
@@ -175,19 +165,9 @@ elif [ ! -f "/debug_service_2.txt" ]; then
             mkdir "/home/humungous/aws_token_storage/"
             chown humungous:humungous "/home/humungous/aws_token_storage/"
             su - -c "/usr/local/bin/aws iam create-access-key --user-name S3TcpdumpUploader" humungous > "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json"
-            su - -c "/usr/local/bin/aws iam create-access-key --user-name S3BucketCreatorWithCompliance" humungous > "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json"
             chown root:root "/home/humungous/.aws/credentials"
             chmod 600 "/home/humungous/.aws/credentials"
             mv "/home/humungous/.aws/credentials" "/root/retired_aws_credentials/accesskeymanager_credentials"
-            echo "[default]" > "/home/humungous/.aws/credentials"
-            echo "aws_access_key_id = $(cat "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json" | jq --raw-output '.AccessKey.AccessKeyId')" >> "/home/humungous/.aws/credentials"
-            echo "aws_secret_access_key = $(cat "/home/humungous/aws_token_storage/s3bucketcreatorwithcompliance_access_key.json" | jq --raw-output '.AccessKey.SecretAccessKey')" >> "/home/humungous/.aws/credentials"
-            chown humungous:humungous "/home/humungous/.aws/credentials"
-            su - -c "/usr/local/bin/aws s3api create-bucket --bucket humungous-tcpdump-captures --object-lock-enabled-for-bucket --region ca-central-1" humungous
-            su - -c "/usr/local/bin/aws s3api put-bucket-versioning --bucket humungous-tcpdump-captures --versioning-configuration Status=Enabled" humungous
-            su - -c "/usr/local/bin/aws s3api put-object-lock-configuration --bucket humungous-tcpdump-captures --object-lock-configuration 'ObjectLockEnabled=Enabled,Rule={DefaultRetention={Mode=COMPLIANCE,Days=30}}'" humungous
-            chown root:root "/home/humungous/.aws/credentials"
-            mv "/home/humungous/.aws/credentials" "/root/retired_aws_credentials/s3bucketcreatorwithcompliance_credentials"
             echo "[default]" > "/home/humungous/.aws/credentials"
             echo "aws_access_key_id = $(cat "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json" | jq --raw-output '.AccessKey.AccessKeyId')" >> "/home/humungous/.aws/credentials"
             echo "aws_secret_access_key = $(cat "/home/humungous/aws_token_storage/s3tcpdumpuploader_access_key.json" | jq --raw-output '.AccessKey.SecretAccessKey')" >> "/home/humungous/.aws/credentials"
