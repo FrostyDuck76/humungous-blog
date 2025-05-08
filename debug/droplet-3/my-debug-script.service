@@ -1,0 +1,5 @@
+[Unit]
+Description=Debugging service configured as part of the initialization script
+
+[Service]
+ExecStart=/usr/bin/my-debug-script.sh
