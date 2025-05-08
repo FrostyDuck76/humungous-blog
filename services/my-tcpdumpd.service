@@ -6,6 +6,7 @@ After=network.target
 [Service]
 ExecStart=/usr/bin/my-tcpdumpd.sh
 ExecStop=/usr/bin/my-tcpdumpd-killscript.sh
+ExecStopPost=/usr/bin/my-tcpdumpd-s3-uploader.sh
 Restart=on-failure
 
 [Install]
