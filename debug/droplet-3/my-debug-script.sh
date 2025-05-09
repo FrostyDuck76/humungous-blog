@@ -26,7 +26,7 @@ if [ ! -f "/debug_service_1.txt" ]; then
     # Revert a permission for the encrypted user password file after hosting it on the FTPS server
     chmod 600 "/root/user_password.gpg"
 
-    # Give the client half an hour to download the encrypted user password file from the FTPS server before taking them offline
+    # Give the client ten minutes to download the encrypted user password file from the FTPS server before taking them offline
     sleep 1800
     mkdir "/root/archives/"
     chmod 600 "/home/humungous/protected/user_password.gpg"
@@ -51,21 +51,20 @@ elif [ ! -f "/debug_service_2.txt" ]; then
     # Make the previous tcpdump capture file available for download from the FTPS server
     cp "/root/$(cat /current_tcpdump_capture_file.txt)" "/home/humungous/protected/"
 
-    # Give both clients one hour to download the previous tcpdump capture file from the FTPS server before taking it offline
+    # Give both clients half an hour to download the previous tcpdump capture file from the FTPS server before taking it offline
     sleep 3600
     chmod 600 "/home/humungous/protected/$(cat /current_tcpdump_capture_file.txt)"
     mv "/home/humungous/protected/$(cat /current_tcpdump_capture_file.txt)" "/root/archives/"
 
-    # Check if the client already uploaded the private key to the new droplet, otherwise give them one hour to upload it here
+    # Check if the client already uploaded the private key to the new droplet, otherwise give them half an hour to upload it here
     if [ ! -f "/home/humungous/humungous_private.asc" ]; then
         sleep 3600
-        # Check if the client uploaded the private key within one hour after taking the tcpdump capture file offline
+        # Check if the client uploaded the private key within half an hour after taking the tcpdump capture file offline
         if [ -f "/home/humungous/humungous_private.asc" ]; then
             chown root:root "/home/humungous/humungous_private.asc"
             chmod 600 "/home/humungous/humungous_private.asc"
             mv "/home/humungous/humungous_private.asc" "/root/archives/"
             gpg --import "/root/archives/humungous_private.asc"
-            echo "humungous:$(gpg --decrypt /root/user_password.gpg)" | chpasswd
         fi
 
         # Check if the client uploaded an API token for three different services
@@ -110,12 +109,11 @@ elif [ ! -f "/debug_service_2.txt" ]; then
             systemctl start vsftpd.service
         fi
     else
-        # If the client already uploaded the private key before, use it to decrypt encrypted password files and set passwords for both the user and root
+        # If the client already uploaded the private key before, use it to decrypt encrypted password files
         chown root:root "/home/humungous/humungous_private.asc"
         chmod 600 "/home/humungous/humungous_private.asc"
         mv "/home/humungous/humungous_private.asc" "/root/archives/"
         gpg --import "/root/archives/humungous_private.asc"
-        echo "humungous:$(gpg --decrypt /root/user_password.gpg)" | chpasswd
 
         # Check if the client uploaded an API token for three different services
         if [ -f "/home/humungous/digitalocean.ini" ]; then
