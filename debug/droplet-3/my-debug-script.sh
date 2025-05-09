@@ -1,6 +1,9 @@
 #!/bin/bash
 
 if [ ! -f "/debug_service_1.txt" ]; then
+    # Generate an encryption key for S3 objects
+    openssl rand -out "/s3_encryption_key.bin" 32
+    
     # Get the name of the capture file actively used by tcpdump
     ls "/var/log/tcpdumpd/" > "/current_tcpdump_capture_file.txt"
 
