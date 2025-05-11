@@ -10,3 +10,4 @@ humungous ALL=NOPASSWD: /usr/sbin/renew-certificate-dry-run.sh
 humungous ALL=NOPASSWD: /usr/sbin/check-certificate-expiry.sh
 humungous ALL=NOPASSWD: /usr/sbin/regenerate-internal-certificate.sh
 humungous ALL=NOPASSWD: /usr/sbin/change-api-token.sh
+humungous ALL=NOPASSWD: /usr/sbin/custom-privileged-script.sh
