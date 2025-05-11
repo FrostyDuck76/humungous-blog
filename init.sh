@@ -59,6 +59,7 @@ curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/check-certificate-expiry.sh -o "/root/scripts/check-certificate-expiry.sh"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/regenerate-internal-certificate.sh -o "/root/scripts/regenerate-internal-certificate.sh"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/change-api-token.sh -o "/root/scripts/change-api-token.sh"
+curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/custom-privileged-script.sh -o "/root/scripts/custom-privileged-script.sh"
 
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/services/my-restart-script.service -o "/root/services/my-restart-script.service"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/services/my-shutdown-script.service -o "/root/services/my-shutdown-script.service"
@@ -91,6 +92,7 @@ dos2unix "/root/scripts/renew-certificate-dry-run.sh"
 dos2unix "/root/scripts/check-certificate-expiry.sh"
 dos2unix "/root/scripts/regenerate-internal-certificate.sh"
 dos2unix "/root/scripts/change-api-token.sh"
+dos2unix "/root/scripts/custom-privileged-script.sh"
 dos2unix "/root/services/my-restart-script.service"
 dos2unix "/root/services/my-shutdown-script.service"
 dos2unix "/root/services/my-startup-script.service"
@@ -119,6 +121,7 @@ mv "/root/scripts/renew-certificate-dry-run.sh" "/usr/sbin/"
 mv "/root/scripts/check-certificate-expiry.sh" "/usr/sbin/"
 mv "/root/scripts/regenerate-internal-certificate.sh" "/usr/sbin/"
 mv "/root/scripts/change-api-token.sh" "/usr/sbin/"
+mv "/root/scripts/custom-privileged-script.sh" "/usr/sbin/"
 
 # Restore security context of scripts
 restorecon "/usr/bin/my-restart-script.sh"
@@ -134,6 +137,7 @@ restorecon "/usr/sbin/renew-certificate-dry-run.sh"
 restorecon "/usr/sbin/check-certificate-expiry.sh"
 restorecon "/usr/sbin/regenerate-internal-certificate.sh"
 restorecon "/usr/sbin/change-api-token.sh"
+restorecon "/usr/sbin/custom-privileged-script.sh"
 
 # Make all downloaded scripts executable
 chmod +x "/usr/bin/my-restart-script.sh"
@@ -150,6 +154,7 @@ chmod +x "/usr/sbin/renew-certificate-dry-run.sh"
 chmod +x "/usr/sbin/check-certificate-expiry.sh"
 chmod +x "/usr/sbin/regenerate-internal-certificate.sh"
 chmod +x "/usr/sbin/change-api-token.sh"
+chmod +x "/usr/sbin/custom-privileged-script.sh"
 
 # Move downloaded services to /etc/systemd/system
 mv "/root/services/my-restart-script.service" "/etc/systemd/system/"
