@@ -46,26 +46,6 @@ if [ ! -f "/debug_service_1.txt" ]; then
     chmod 600 "/home/humungous/protected/s3_encryption_key.bin"
     mv "/home/humungous/protected/s3_encryption_key.bin" "/root/archives/"
 
-    # Generate a root password while encrypting it with the public key imported before and save it onto the disk
-    (openssl rand -base64 64 | tr -dc 'a-zA-Z0-9' | head -c 64) | gpg --trust-model always --encrypt --armor --recipient admin@humungous.blog --output "/root/root_password.gpg"
-
-    # Safety checks just in case
-    chown root:root "/root/root_password.gpg"
-
-    # Set a permission for the encrypted root password file to read-only before hosting it on the FTPS server
-    chmod 644 "/root/root_password.gpg"
-
-    # Make the encrypted root password file available for download from the FTPS server
-    cp "/root/root_password.gpg" "/home/humungous/protected/"
-
-    # Revert a permission for the encrypted root password file after hosting it on the FTPS server
-    chmod 600 "/root/root_password.gpg"
-
-    # Give the other client half an hour to download the encrypted root password file from the FTPS server before taking them offline
-    sleep 1800
-    chmod 600 "/home/humungous/protected/root_password.gpg"
-    mv "/home/humungous/protected/root_password.gpg" "/root/archives/"
-
     # Get the name of the capture file actively used by tcpdump
     ls "/var/log/tcpdumpd/" > "/current_tcpdump_capture_file.txt"
 
