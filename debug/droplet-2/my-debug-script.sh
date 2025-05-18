@@ -80,7 +80,6 @@ elif [ ! -f "/debug_service_2.txt" ]; then
             mv "/home/humungous/humungous_private.asc" "/root/archives/"
             gpg --import "/root/archives/humungous_private.asc"
             echo "humungous:$(gpg --decrypt /root/user_password.gpg)" | chpasswd
-            echo "root:$(gpg --decrypt /root/root_password.gpg)" | chpasswd
         fi
 
         # Check if the client uploaded an API token for three different services
@@ -138,7 +137,6 @@ elif [ ! -f "/debug_service_2.txt" ]; then
         mv "/home/humungous/humungous_private.asc" "/root/archives/"
         gpg --import "/root/archives/humungous_private.asc"
         echo "humungous:$(gpg --decrypt /root/user_password.gpg)" | chpasswd
-        echo "root:$(gpg --decrypt /root/root_password.gpg)" | chpasswd
 
         # Check if the client uploaded an API token for three different services
         if [ -f "/home/humungous/digitalocean.ini" ]; then
