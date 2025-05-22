@@ -156,9 +156,6 @@ restorecon "/etc/ssl/certs/internal.crt"
 # Create a directory to archive retired internal certificates when the user schedules regenerating an internal certificate
 mkdir "/root/retired_certificates/"
 
-# Create a directory to archive obsolete or compromised tokens when the user changes the API token for a DNS service
-mkdir "/root/retired_tokens/"
-
 # Create a directory to archive retired AWS credentials
 mkdir "/root/retired_aws_credentials/"
 
