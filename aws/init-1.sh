@@ -23,8 +23,6 @@ curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads
 mv "/root/amazon-cloudwatch-agent.json" "/opt/aws/amazon-cloudwatch-agent/etc/"
 chown root:cwagent "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"
 chmod 640 "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"
-systemctl enable amazon-cloudwatch-agent.service
-systemctl start amazon-cloudwatch-agent.service
 
 # Manage some services
 systemctl disable vsftpd.service
@@ -116,6 +114,7 @@ restorecon "/etc/systemd/system/my-tcpdumpd.service"
 
 # Manage some services again
 systemctl daemon-reload
+systemctl enable amazon-cloudwatch-agent.service
 systemctl enable my-startup-script.service
 systemctl enable my-tcpdumpd.service
 
