@@ -1,4 +1,0 @@
-[default]
-region = ca-central-1
-output = json
-cli_pager =
