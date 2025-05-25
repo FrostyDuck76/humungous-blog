@@ -21,8 +21,8 @@ curl -L https://s3.ap-southeast-2.amazonaws.com/amazoncloudwatch-agent-ap-southe
 rpm -i "/root/amazon-cloudwatch-agent.rpm"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/amazon-cloudwatch-agent.json -o "/root/amazon-cloudwatch-agent.json"
 mv "/root/amazon-cloudwatch-agent.json" "/opt/aws/amazon-cloudwatch-agent/etc/"
-chown cwagent:cwagent "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"
-chmod 400 "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"
+chown root:cwagent "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"
+chmod 640 "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"
 systemctl enable amazon-cloudwatch-agent.service
 systemctl start amazon-cloudwatch-agent.service
 
