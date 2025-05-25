@@ -136,7 +136,7 @@ systemctl enable my-tcpdumpd.service
 # Create RSA certificates for use by three different services
 mkdir -p "/etc/ssl/private/"
 mkdir -p "/etc/ssl/certs/"
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/internal.key -out /etc/ssl/certs/internal.crt -subj "/O=Internal Services/OU=Infrastructure/CN=129.212.160.85" -addext "subjectAltName = IP:129.212.160.85"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/internal.key -out /etc/ssl/certs/internal.crt -subj "/O=Internal Services/OU=Infrastructure/CN=129.212.160.85" -addext "subjectAltName = IP:16.176.112.30"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/unified.key -out /etc/ssl/certs/unified.crt -subj "/C=AU/ST=Queensland/L=Brisbane/O=Humungous Blogs/CN=humungous.blog/emailAddress=admin@humungous.blog" -addext "subjectAltName = DNS:humungous.blog,DNS:www.humungous.blog"
 
 # Change permissions of the 'unified' certificate to be readable by anyone other than root
