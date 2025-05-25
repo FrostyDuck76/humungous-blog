@@ -11,18 +11,12 @@ dnf install tcpdump --assumeyes &>> /var/log/dnf_output.log
 dnf install dos2unix --assumeyes &>> /var/log/dnf_output.log
 dnf install nodejs --assumeyes &>> /var/log/dnf_output.log
 dnf install vsftpd --assumeyes &>> /var/log/dnf_output.log
-dnf install nginx --assumeyes &>> /var/log/dnf_output.log
 dnf install telnet-server --assumeyes &>> /var/log/dnf_output.log
 dnf install iptables --assumeyes &>> /var/log/dnf_output.log
 dnf install openssl --assumeyes &>> /var/log/dnf_output.log
 dnf install stunnel --assumeyes &>> /var/log/dnf_output.log
 dnf install unzip --assumeyes &>> /var/log/dnf_output.log
 dnf install jq --assumeyes &>> /var/log/dnf_output.log
-
-# Install AWS CLI from the official source
-curl -L https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o "/root/awscliv2.zip"
-unzip "/root/awscliv2.zip" -d "/root/"
-/root/aws/install
 
 # Install and set up the CloudWatch agent
 curl -L https://s3.ap-southeast-2.amazonaws.com/amazoncloudwatch-agent-ap-southeast-2/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm -o "/root/amazon-cloudwatch-agent.rpm"
@@ -36,12 +30,10 @@ systemctl start amazon-cloudwatch-agent.service
 
 # Manage some services
 systemctl disable vsftpd.service
-systemctl disable nginx.service
 systemctl disable telnet.socket
 systemctl disable stunnel.service
 systemctl disable sshd.service
 systemctl stop vsftpd.service
-systemctl stop nginx.service
 systemctl stop stunnel.service
 systemctl stop telnet.socket
 systemctl stop sshd.service
@@ -67,10 +59,8 @@ mkdir -p "/root/configs/"
 mkdir -p "/root/configs_old/"
 
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/vsftpd.conf -o "/root/configs/vsftpd.conf"
-curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/nginx.conf -o "/root/configs/nginx.conf"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/stunnel.conf -o "/root/configs/stunnel.conf"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/99-restricted-user -o "/root/configs/99-restricted-user"
-curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/aws-config -o "/root/configs/aws-config"
 
 # Convert line-encodings from CRLF to LF
 dos2unix "/root/scripts/my-restart-script.sh"
@@ -84,10 +74,8 @@ dos2unix "/root/services/my-shutdown-script.service"
 dos2unix "/root/services/my-startup-script.service"
 dos2unix "/root/services/my-tcpdumpd.service"
 dos2unix "/root/configs/vsftpd.conf"
-dos2unix "/root/configs/nginx.conf"
 dos2unix "/root/configs/stunnel.conf"
 dos2unix "/root/configs/99-restricted-user"
-dos2unix "/root/configs/aws-config"
 
 # Move downloaded scripts to /usr/bin
 mv "/root/scripts/my-restart-script.sh" "/usr/bin/"
@@ -195,22 +183,11 @@ rm "/password.txt"
 if [ -f "/etc/vsftpd/vsftpd.conf" ]; then
     mv "/etc/vsftpd/vsftpd.conf" "/root/configs_old/"
 fi
-if [ -f "/etc/nginx/nginx.conf" ]; then
-    mv "/etc/nginx/nginx.conf" "/root/configs_old/"
-fi
 if [ -f "/etc/stunnel/stunnel.conf" ]; then
     mv "/etc/stunnel/stunnel.conf" "/root/configs_old/"
 fi
 mv "/root/configs/vsftpd.conf" "/etc/vsftpd/"
-mv "/root/configs/nginx.conf" "/etc/nginx/"
 mv "/root/configs/stunnel.conf" "/etc/stunnel/"
-
-# Apply configurations to AWS CLI
-mkdir "/home/humungous/.aws/"
-chown humungous:humungous "/home/humungous/.aws/"
-mv "/root/configs/aws-config" "/home/humungous/.aws/config"
-chown root:root "/home/humungous/.aws/config"
-chmod 644 "/home/humungous/.aws/config"
 
 # Lock down the downloaded 'tcpdump' packages when moving them to /home/humungous
 chown root:root --recursive "/root/tcpdump_packages/"
@@ -230,7 +207,6 @@ setsebool -P ftpd_full_access on
 
 # Restore security context of configurations
 restorecon "/etc/vsftpd/vsftpd.conf"
-restorecon "/etc/nginx/nginx.conf"
 restorecon "/etc/stunnel/stunnel.conf"
 restorecon "/etc/sudoers.d/99-restricted-user"
 
