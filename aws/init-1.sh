@@ -5,8 +5,6 @@ mv "/root/.ssh/authorized_keys" "/root/authorized_ssh_key"
 dnf remove openssh-server --assumeyes &>> /var/log/dnf_output.log
 
 # Install the necessary packages
-mkdir "/root/tcpdump_packages/"
-dnf install tcpdump --downloadonly --downloaddir "/root/tcpdump_packages/" --assumeyes &>> /var/log/dnf_output.log
 dnf install tcpdump --assumeyes &>> /var/log/dnf_output.log
 dnf install dos2unix --assumeyes &>> /var/log/dnf_output.log
 dnf install nodejs --assumeyes &>> /var/log/dnf_output.log
@@ -160,14 +158,9 @@ firewall-cmd --reload
 
 # Non-root user management
 useradd humungous
-mkdir -p "/var/www/html/"
-chown humungous:humungous --recursive "/var/www/html/"
-mkdir "/home/humungous/html/"
 mkdir "/home/humungous/tcpdumpd/"
-chown humungous:humungous "/home/humungous/html/"
 chown root:root "/home/humungous/tcpdumpd/"
 chmod 755 "/home/humungous/tcpdumpd/"
-echo "/var/www/html    /home/humungous/html    none    bind    0    0" >> "/etc/fstab"
 echo "/var/log/tcpdumpd    /home/humungous/tcpdumpd    none    bind    0    0" >> "/etc/fstab"
 
 # Make the initial public SSH key available to the user
@@ -188,12 +181,6 @@ if [ -f "/etc/stunnel/stunnel.conf" ]; then
 fi
 mv "/root/configs/vsftpd.conf" "/etc/vsftpd/"
 mv "/root/configs/stunnel.conf" "/etc/stunnel/"
-
-# Lock down the downloaded 'tcpdump' packages when moving them to /home/humungous
-chown root:root --recursive "/root/tcpdump_packages/"
-chmod 644 --recursive "/root/tcpdump_packages/"
-chmod 755 "/root/tcpdump_packages/"
-mv "/root/tcpdump_packages/" "/home/humungous/"
 
 # Apply pre-configured sudoers file that allows the user to run some commands as root
 mv "/root/configs/99-restricted-user" "/etc/sudoers.d/"
