@@ -13,8 +13,6 @@ dnf install telnet-server --assumeyes &>> /var/log/dnf_output.log
 dnf install iptables --assumeyes &>> /var/log/dnf_output.log
 dnf install openssl --assumeyes &>> /var/log/dnf_output.log
 dnf install stunnel --assumeyes &>> /var/log/dnf_output.log
-dnf install unzip --assumeyes &>> /var/log/dnf_output.log
-dnf install jq --assumeyes &>> /var/log/dnf_output.log
 
 # Install and set up the CloudWatch agent
 curl -L https://s3.ap-southeast-2.amazonaws.com/amazoncloudwatch-agent-ap-southeast-2/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm -o "/root/amazon-cloudwatch-agent.rpm"
