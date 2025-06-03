@@ -6,7 +6,7 @@ if [ -f "/regenerate_internal_certificate.txt" ]; then
     mkdir "/root/retired_certificates/$TIME/"
     mv "/etc/ssl/private/internal.key" "/root/retired_certificates/$TIME/"
     mv "/etc/ssl/certs/internal.crt" "/root/retired_certificates/$TIME/"
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/internal.key -out /etc/ssl/certs/internal.crt -subj "/O=Internal Services/OU=Infrastructure/CN=16.176.112.30" -addext "subjectAltName = IP:16.176.112.30"
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/internal.key -out /etc/ssl/certs/internal.crt -subj "/O=Internal Services/OU=Infrastructure/CN=18.134.32.42" -addext "subjectAltName = IP:18.134.32.42"
     chmod 600 "/etc/ssl/private/internal.key"
     chmod 644 "/etc/ssl/certs/internal.crt"
     restorecon "/etc/ssl/private/internal.key"
