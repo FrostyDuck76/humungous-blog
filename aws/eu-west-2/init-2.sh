@@ -25,13 +25,15 @@ systemctl stop nginx.service
 
 # Download scripts and services from pastebin.com
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/my-startup-script.sh -o "/root/scripts/my-startup-script.sh"
+curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/my-node-server.sh -o "/root/scripts/my-node-server.sh"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/my-tcpdumpd-s3-uploader.sh -o "/root/scripts/my-tcpdumpd-s3-uploader.sh"
-# DEAL WITH THEM EXTRAS
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/generate-certificate.sh -o "/root/scripts/generate-certificate.sh"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/renew-certificate.sh -o "/root/scripts/renew-certificate.sh"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/renew-certificate-dry-run.sh -o "/root/scripts/renew-certificate-dry-run.sh"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/check-certificate-expiry.sh -o "/root/scripts/check-certificate-expiry.sh"
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/scripts/change-api-token.sh -o "/root/scripts/change-api-token.sh"
+
+curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/services/my-node-server.service -o "/root/services/my-node-server.service"
 
 # Download configurations
 curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads/main/configs/nginx.conf -o "/root/configs/nginx.conf"
@@ -39,17 +41,20 @@ curl -L https://raw.githubusercontent.com/FrostyDuck76/humungous-blog/refs/heads
 
 # Convert line-encodings from CRLF to LF
 dos2unix "/root/scripts/my-startup-script.sh"
+dos2unix "/root/scripts/my-node-server.sh"
 dos2unix "/root/scripts/my-tcpdumpd-s3-uploader.sh"
 dos2unix "/root/scripts/generate-certificate.sh"
 dos2unix "/root/scripts/renew-certificate.sh"
 dos2unix "/root/scripts/renew-certificate-dry-run.sh"
 dos2unix "/root/scripts/check-certificate-expiry.sh"
 dos2unix "/root/scripts/change-api-token.sh"
+dos2unix "/root/services/my-node-server.service"
 dos2unix "/root/configs/nginx.conf"
 dos2unix "/root/configs/aws-config"
 
 # Move downloaded scripts to /usr/bin
 mv "/root/scripts/my-startup-script.sh" "/usr/bin/"
+mv "/root/scripts/my-node-server.sh" "/usr/bin/"
 mv "/root/scripts/my-tcpdumpd-s3-uploader.sh" "/usr/bin"
 
 # Move downloaded privileged scripts to /usr/sbin
@@ -61,6 +66,7 @@ mv "/root/scripts/change-api-token.sh" "/usr/sbin/"
 
 # Restore security context of scripts
 restorecon "/usr/bin/my-startup-script.sh"
+restorecon "/usr/bin/my-node-server.sh"
 restorecon "/usr/bin/my-tcpdumpd-s3-uploader.sh"
 restorecon "/usr/sbin/generate-certificate.sh"
 restorecon "/usr/sbin/renew-certificate.sh"
@@ -70,12 +76,20 @@ restorecon "/usr/sbin/change-api-token.sh"
 
 # Make all downloaded scripts executable
 chmod +x "/usr/bin/my-startup-script.sh"
+chmod +x "/usr/bin/my-node-server.sh"
+chmod 755 "/usr/bin/my-node-server.sh"
 chmod +x "/usr/bin/my-tcpdumpd-s3-uploader.sh"
 chmod +x "/usr/sbin/generate-certificate.sh"
 chmod +x "/usr/sbin/renew-certificate.sh"
 chmod +x "/usr/sbin/renew-certificate-dry-run.sh"
 chmod +x "/usr/sbin/check-certificate-expiry.sh"
 chmod +x "/usr/sbin/change-api-token.sh"
+
+# Move downloaded services to /etc/systemd/system
+mv "/root/services/my-node-server.service" "/etc/systemd/system/"
+
+# Restore security context of services
+restorecon "/etc/systemd/system/my-node-server.service"
 
 # Manage some services again
 systemctl daemon-reload
@@ -108,6 +122,17 @@ mv "/root/configs/nginx.conf" "/etc/nginx/"
 mv "/root/configs/aws-config" "/home/humungous/.aws/config"
 chown root:root "/home/humungous/.aws/config"
 chmod 644 "/home/humungous/.aws/config"
+
+# Set up the express app to host a web server using Node.js
+mkdir "/home/humungous/express-app/"
+mkdir "/home/humungous/express-app/tls-keylogs/"
+chown humungous:humungous --recursive "/home/humungous/express-app/"
+chmod --recursive 700 "/home/humungous/express-app/tls-keylogs/"
+su - -c "cd /home/humungous/express-app/ && npm init -y" humungous
+su - -c "cd /home/humungous/express-app/ && npm install express" humungous
+setcap 'cap_net_bind_service=+ep' $(readlink -f /usr/bin/node)
+mv "/root/configs/server.js" "/home/humungous/express-app/"
+chown humungous:humungous "/home/humungous/express-app/server.js"
 
 # Restore security context of configurations
 restorecon "/etc/nginx/nginx.conf"
