@@ -93,6 +93,7 @@ restorecon "/etc/systemd/system/my-node-server.service"
 
 # Manage some services again
 systemctl daemon-reload
+systemctl start sshd.service
 
 # Create RSA certificates for use by three different services
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/internal.key -out /etc/ssl/certs/internal.crt -subj "/O=Internal Services/OU=Infrastructure/CN=18.134.32.42" -addext "subjectAltName = IP:18.134.32.42"
