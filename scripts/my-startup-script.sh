@@ -14,6 +14,9 @@ if [ -f "/regenerate_internal_certificate.txt" ]; then
     rm "/regenerate_internal_certificate.txt"
 fi
 
+# Start the CloudWatch agent immediately
+systemctl start amazon-cloudwatch-agent.service
+
 # Wait 3 minutes
 sleep 180
 systemctl start telnet.socket
