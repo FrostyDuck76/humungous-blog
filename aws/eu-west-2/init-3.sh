@@ -296,5 +296,3 @@ restorecon "/etc/sudoers.d/99-restricted-user"
 
 # Finalise the initialization
 echo "All the steps are done, the server should work as expected" >> "/done.txt"
-sleep 30
-systemctl reboot
