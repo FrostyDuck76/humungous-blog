@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Install the necessary packages
-dnf install tcpdump --assumeyes &>> /var/log/dnf_output.log
 dnf install dos2unix --assumeyes &>> /var/log/dnf_output.log
 dnf install nodejs --assumeyes &>> /var/log/dnf_output.log
 dnf install vsftpd --assumeyes &>> /var/log/dnf_output.log
