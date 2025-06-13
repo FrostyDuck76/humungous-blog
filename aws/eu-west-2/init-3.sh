@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Disable the public SSH key specified when creating the droplet and uninstall the SSH daemon
-mv "/root/.ssh/authorized_keys" "/root/authorized_ssh_key"
-dnf remove openssh-server --assumeyes &>> /var/log/dnf_output.log
-
 # Install the necessary packages
 dnf install tcpdump --assumeyes &>> /var/log/dnf_output.log
 dnf install dos2unix --assumeyes &>> /var/log/dnf_output.log
