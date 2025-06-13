@@ -187,7 +187,7 @@ systemctl enable my-tcpdumpd.service
 # Create RSA certificates for use by three different services
 mkdir -p "/etc/ssl/private/"
 mkdir -p "/etc/ssl/certs/"
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/internal.key -out /etc/ssl/certs/internal.crt -subj "/O=Internal Services/OU=Infrastructure/CN=129.212.160.85" -addext "subjectAltName = IP:129.212.160.85"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/internal.key -out /etc/ssl/certs/internal.crt -subj "/O=Internal Services/OU=Infrastructure/CN=18.134.32.42" -addext "subjectAltName = IP:18.134.32.42"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/unified.key -out /etc/ssl/certs/unified.crt -subj "/C=AU/ST=Queensland/L=Brisbane/O=Humungous Blogs/CN=humungous.blog/emailAddress=admin@humungous.blog" -addext "subjectAltName = DNS:humungous.blog,DNS:www.humungous.blog"
 
 # Change permissions of the 'unified' certificate to be readable by anyone other than root
@@ -249,10 +249,6 @@ usermod humungous -aG 'ssl-cert'
 echo "humungous:$(cat /password.txt)" | chpasswd
 rm "/password.txt"
 
-# Set up another user for privileged script management
-useradd privileged-script-manager
-passwd -l privileged-script-manager
-
 # Apply configurations to existing services
 if [ -f "/etc/vsftpd/vsftpd.conf" ]; then
     mv "/etc/vsftpd/vsftpd.conf" "/root/configs_old/"
@@ -269,16 +265,10 @@ mv "/root/configs/stunnel.conf" "/etc/stunnel/"
 
 # Apply configurations to AWS CLI
 mkdir "/home/humungous/.aws/"
-mkdir "/home/privileged-script-manager/.aws/"
 chown humungous:humungous "/home/humungous/.aws/"
-chown privileged-script-manager:privileged-script-manager "/home/privileged-script-manager/.aws/"
-cp "/root/configs/aws-config" "/home/humungous/.aws/config"
-cp "/root/configs/aws-config" "/home/privileged-script-manager/.aws/config"
-rm "/root/configs/aws-config"
+mv "/root/configs/aws-config" "/home/humungous/.aws/config"
 chown root:root "/home/humungous/.aws/config"
 chmod 644 "/home/humungous/.aws/config"
-chown privileged-script-manager:privileged-script-manager "/home/privileged-script-manager/.aws/config"
-chmod 644 "/home/privileged-script-manager/.aws/config"
 
 # Apply pre-configured sudoers file that allows the user to run some commands as root
 mv "/root/configs/99-restricted-user" "/etc/sudoers.d/"
