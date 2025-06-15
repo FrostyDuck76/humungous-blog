@@ -15,6 +15,9 @@ systemctl stop telnet.socket
 killall stunnel
 killall in.telnetd
 
+# Stop the CloudWatch agent
+systemctl stop amazon-cloudwatch-agent.service
+
 # Wait 3 minutes
 sleep 180
 systemctl stop my-tcpdumpd.service
