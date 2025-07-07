@@ -181,7 +181,6 @@ chmod 440 "/etc/sudoers.d/99-restricted-user"
 visudo --check "/etc/sudoers.d/99-restricted-user" > "/home/humungous/simple_visudo_check.txt"
 chown humungous:humungous "/home/humungous/simple_visudo_check.txt"
 chmod 644 "/home/humungous/simple_visudo_check.txt"
-echo "humungous ALL=NOPASSWD: /install-cwagent.sh" >> /etc/sudoers.d/99-restricted-user
 
 # Enable SELinux boolean to allow FTP full access
 setsebool -P ftpd_full_access on
